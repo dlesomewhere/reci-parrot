@@ -1,6 +1,21 @@
 <nav class="navbar navbar-toggleable-md navbar-light bg-faded">
-<a class="navbar-brand" href="#">
-  <%= image_tag("parrot.png", alt: "parrot", width: 30) %>
-  Reciparrot
-</a>
+  <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <a class="navbar-brand" href="#">
+    <%= image_tag("parrot.png", alt: "parrot", width: 30) %>
+    Reciparrot
+  </a>
+
+  <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+    <ul class="navbar navbar-nav">
+    <% if current_user %>
+      <li class="nav-item">
+        <%= link_to "Logout #{current_user.first_name}", signout_path, id: "sign_out" %>
+      </li>
+    <% else %>
+      <%= link_to "Login", "/auth/google_oauth2", id: "sign_in" %>
+    <% end %>
+    </ul>
+  </div>
 </nav>
