@@ -65,7 +65,11 @@ class RecipesController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_recipe
-      @recipe = Recipe.find(params[:id])
+      begin
+        @recipe = current_user.recipes.find(params[:id])
+      rescue ActiveRecord::RecordNotFound
+        redirect_to recipes_path
+      end
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

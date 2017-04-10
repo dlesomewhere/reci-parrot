@@ -7,6 +7,7 @@ RSpec.describe RecipesController, type: :controller do
   let(:invalid_attributes) { FactoryGirl.attributes_for(:invalid_recipe) }
   let(:valid_attributes) { FactoryGirl.attributes_for(:recipe) }
   let(:recipe) { FactoryGirl.create(:recipe, user: user) }
+  let!(:other_recipe) { FactoryGirl.create(:recipe) }
 
   describe "GET #index" do
     it "assigns recipes for user as @recipes" do
@@ -19,6 +20,11 @@ RSpec.describe RecipesController, type: :controller do
     it "assigns the requested recipe as @recipe" do
       get :show, params: {id: recipe.to_param}, session: valid_session
       expect(assigns(:recipe)).to eq(recipe)
+    end
+
+    it "redirects to recipes_path if recipe belongs to another user" do
+      get :show, params: {id: other_recipe.to_param}, session: valid_session
+      expect(response).to redirect_to(recipes_path)
     end
   end
 
@@ -33,6 +39,11 @@ RSpec.describe RecipesController, type: :controller do
     it "assigns the requested recipe as @recipe" do
       get :edit, params: {id: recipe.to_param}, session: valid_session
       expect(assigns(:recipe)).to eq(recipe)
+    end
+
+    it "redirects to recipes_path if recipe belongs to another user" do
+      get :edit, params: {id: other_recipe.to_param}, session: valid_session
+      expect(response).to redirect_to(recipes_path)
     end
   end
 
@@ -116,6 +127,13 @@ RSpec.describe RecipesController, type: :controller do
 
     it "redirects to the recipes list" do
       delete :destroy, params: {id: recipe.to_param}, session: valid_session
+      expect(response).to redirect_to(recipes_url)
+    end
+
+    it "redirects to recipes_path when recipe belongs to another user" do
+      expect {
+        delete :destroy, params: {id: other_recipe.to_param}, session: valid_session
+      }.to_not change(Recipe, :count)
       expect(response).to redirect_to(recipes_url)
     end
   end
