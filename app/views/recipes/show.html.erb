@@ -1,0 +1,7 @@
+<h2><%= @recipe.name %></h2>
+<p><%= link_to @recipe.url, @recipe.url %></td></p>
+
+<%= link_to "My Recipes", recipes_path %> |
+<%= link_to "Edit", edit_recipe_path(@recipe) %> |
+<%= link_to "Remove", @recipe, method: :delete,
+  data: { confirm: "Are you sure you want to remove #{@recipe.name}?" } %>
