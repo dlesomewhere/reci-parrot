@@ -2,7 +2,9 @@
   <h2>Reciparrot</h2>
   <h6 class="text-muted ">Share DELICIOUS recipes with the recipe parrot</h6>
 
-  <a class="btn btn-primary mt-2" href="https://twitter.com/intent/follow?screen_name=reciparrot" role="button">
-    Follow Reciparrot on Twitter
-  </a>
+  <% if logged_in? %>
+    <%= button_to "Start Sharing", recipes_path, method: :get, class: "btn btn-primary mt-2" %>
+  <% else %>
+    <%= button_to "Start Sharing", "/auth/google_oauth2", class: "btn btn-primary mt-2" %>
+  <% end %>
 </div>

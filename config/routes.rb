@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  get 'recipe/index'
+  resources :recipes
 
   get 'auth/:provider/callback', to: 'sessions#create'
   get 'auth/failure', to: redirect('/')

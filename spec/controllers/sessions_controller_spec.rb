@@ -16,8 +16,8 @@ RSpec.describe SessionsController, type: :controller do
       expect { subject }.to change { session[:user_id] }.from(nil).to be_present
     end
 
-    it "redirects to the recipe index" do
-      expect(subject).to redirect_to(recipe_index_path)
+    it "redirects to the recipes index" do
+      expect(subject).to redirect_to(recipes_path)
     end
   end
 
