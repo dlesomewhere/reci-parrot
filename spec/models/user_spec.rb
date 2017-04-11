@@ -3,6 +3,11 @@ require "rails_helper"
 RSpec.describe User, type: :model do
   let(:user) { FactoryGirl.create(:user) }
 
+  it "is invalid if email is missing" do
+    user.email = nil
+    expect(user).to be_invalid
+  end
+
   it "is invalid if uid is missing" do
     user.uid = nil
     expect(user).to be_invalid
