@@ -4,6 +4,7 @@ FactoryGirl.define do
     sequence :uid { |n| "#{n}" }
     first_name "John"
     last_name "Doe"
+    sequence :email { |n| "John@domain#{n}.test" }
     oauth_token "token"
     oauth_expires_at Time.now + 1.day
   end
