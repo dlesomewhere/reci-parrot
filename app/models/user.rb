@@ -3,7 +3,8 @@ class User < ApplicationRecord
   validates :uid, uniqueness: { scope: :provider }
   validates :email, uniqueness: true
 
-  has_many :recipes
+  has_many :recipe_book_pages
+  has_many :recipes, through: :recipe_book_pages
 
   def self.from_omniauth(auth)
     where(provider: auth.provider, uid: auth.uid).first_or_initialize.tap do |user|

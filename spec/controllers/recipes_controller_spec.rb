@@ -1,13 +1,17 @@
 require "rails_helper"
 
 RSpec.describe RecipesController, type: :controller do
-  let(:user) { FactoryGirl.create(:user) }
+  let(:recipe_book_page) { FactoryGirl.create(:recipe_book_page) }
+  let(:recipe) { recipe_book_page.recipe }
+  let(:user) { recipe_book_page.user }
+
   let(:valid_session) { { user_id: user.id } }
 
   let(:invalid_attributes) { FactoryGirl.attributes_for(:invalid_recipe) }
   let(:valid_attributes) { FactoryGirl.attributes_for(:recipe) }
-  let(:recipe) { FactoryGirl.create(:recipe, user: user) }
-  let!(:other_recipe) { FactoryGirl.create(:recipe) }
+
+  let(:other_recipe_book_page) { FactoryGirl.create(:recipe_book_page) }
+  let!(:other_recipe) { other_recipe_book_page.recipe }
 
   describe "GET #index" do
     it "assigns recipes for user as @recipes" do

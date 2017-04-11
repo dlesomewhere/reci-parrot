@@ -16,9 +16,4 @@ RSpec.describe Recipe, type: :model do
     recipe.name = nil
     expect(recipe).to be_invalid
   end
-
-  it "is invalid when user is missing" do
-    recipe.user = nil
-    expect(recipe).to be_invalid
-  end
 end
