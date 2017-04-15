@@ -21,6 +21,20 @@ RSpec.describe SessionsController, type: :controller do
     end
   end
 
+  context "when request has a share token" do
+    describe "#create" do
+      it "creates a new user with the shared recipe" do
+        share = FactoryGirl.create(:share)
+
+        expect {
+          get :create, params: { share_token: share.token }
+        }.to change { User.count }.from(1).to(2)
+
+        expect(User.last.recipes.first).to eq(share.recipe)
+      end
+    end
+  end
+
   describe "#destroy" do
     before :each do
       get :create

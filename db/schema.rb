@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170411202804) do
+ActiveRecord::Schema.define(version: 20170411212204) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -29,6 +29,19 @@ ActiveRecord::Schema.define(version: 20170411202804) do
     t.string   "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "shares", force: :cascade do |t|
+    t.integer  "recipe_id",       null: false
+    t.integer  "sender_id",       null: false
+    t.string   "recipient_email", null: false
+    t.string   "token",           null: false
+    t.integer  "recipient_id"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+    t.index ["recipe_id"], name: "index_shares_on_recipe_id", using: :btree
+    t.index ["recipient_id"], name: "index_shares_on_recipient_id", using: :btree
+    t.index ["sender_id"], name: "index_shares_on_sender_id", using: :btree
   end
 
   create_table "users", force: :cascade do |t|

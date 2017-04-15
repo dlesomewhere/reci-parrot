@@ -1,0 +1,24 @@
+<%= form_for(share) do |f| %>
+  <% if share.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(recipe.errors.count, "error") %> prohibited this share from being saved:</h2>
+
+      <ul>
+        <% share.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <%= f.hidden_field :recipe_id, value: @share.recipe_id %>
+
+  <div class="form-group row">
+    <label for="example-text-input" class="col-2 col-form-label">Email</label>
+    <div class="col-10">
+      <%= f.text_field :recipient_email, class: "form-control" %>
+    </div>
+  </div>
+
+  <button type="Share!" class="btn btn-primary">Submit</button>
+<% end %>
