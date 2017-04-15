@@ -64,4 +64,10 @@ RSpec.describe User, type: :model do
       expect(subject.oauth_expires_at).to eq(Time.at(1354920555))
     end
   end
+
+  describe "#full_name" do
+    it "is first_name last_name" do
+      expect(subject.full_name).to eq("#{subject.first_name} #{subject.last_name}")
+    end
+  end
 end

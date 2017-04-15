@@ -19,4 +19,8 @@ class User < ApplicationRecord
       user.save!
     end
   end
+
+  def full_name
+    [first_name, last_name].join(" ")
+  end
 end
