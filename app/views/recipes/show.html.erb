@@ -18,7 +18,7 @@
       <h6 class="mt-5">Shared with:</h6>
       <table class="table table-sm">
         <tbody>
-          <% @recipe.shares.each do |share| %>
+          <% @my_shares.each do |share| %>
             <tr>
               <td><%= share.recipient_email %></td>
             </tr>

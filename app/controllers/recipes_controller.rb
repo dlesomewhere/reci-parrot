@@ -11,6 +11,7 @@ class RecipesController < ApplicationController
   # GET /recipes/1.json
   def show
     @share = Share.new(recipe: @recipe, sender: current_user)
+    @my_shares = Share.where(sender: current_user, recipe: @recipe)
   end
 
   # GET /recipes/new

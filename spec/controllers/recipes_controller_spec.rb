@@ -26,6 +26,20 @@ RSpec.describe RecipesController, type: :controller do
       expect(assigns(:recipe)).to eq(recipe)
     end
 
+    it "assigns a new share as @share" do
+      get :show, params: {id: recipe.to_param}, session: valid_session
+      expect(assigns(:share)).to be_a_new(Share)
+      expect(assigns(:share).recipe).to eq(recipe)
+      expect(assigns(:share).sender).to eq(user)
+    end
+
+    it "assigns shares made by me to @my_shares" do
+      FactoryGirl.create(:share, recipe: recipe)
+      my_share = FactoryGirl.create(:share, sender: user, recipe: recipe)
+      get :show, params: {id: recipe.to_param}, session: valid_session
+      expect(assigns(:my_shares)).to match_array(my_share)
+    end
+
     it "redirects to recipes_path if recipe belongs to another user" do
       get :show, params: {id: other_recipe.to_param}, session: valid_session
       expect(response).to redirect_to(recipes_path)
