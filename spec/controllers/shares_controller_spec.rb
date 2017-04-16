@@ -22,11 +22,9 @@ RSpec.describe SharesController, type: :controller do
         expect(assigns(:share)).to be_persisted
       end
 
-      it "redirects to ..." do
-
-      end
-
-      it "send an email" do
+      it "redirects to the recipe shared" do
+        post :create, params: { share: valid_attributes }, session: valid_session
+        expect(response).to redirect_to(assigns(:share).recipe)
       end
     end
 
@@ -37,9 +35,47 @@ RSpec.describe SharesController, type: :controller do
         expect(assigns(:share)).to be_a(Share)
         expect(assigns(:share)).to_not be_persisted
       end
+    end
 
-      it "redirects to ..." do
+    context "when the recipient doesn't exist" do
+      before :each do
+        ActionMailer::Base.deliveries = []
 
+        post :create, params: { share: valid_attributes }, session: valid_session
+      end
+
+      it "sends an email to the recipient" do
+        share = assigns(:share)
+        expect(ActionMailer::Base.deliveries.count).to eq(1)
+
+        expect(
+          ActionMailer::Base.deliveries.last.subject
+        ).to eq("#{share.sender.full_name} shared a DELICIOUS recipe with you!")
+        expect(ActionMailer::Base.deliveries.last.to).to match_array(share.recipient_email)
+      end
+    end
+
+    context "when the recipient exists" do
+      let!(:recipient) { FactoryGirl.create(:user) }
+
+      before :each do
+        valid_attributes["recipient_email"] = recipient.email
+        ActionMailer::Base.deliveries = []
+
+        post :create, params: { share: valid_attributes }, session: valid_session
+      end
+
+      it "adds the recipe to the recipient" do
+        expect(recipient.reload.recipes).to match_array(assigns(:share).recipe)
+      end
+
+      it "sends an email to the recipient" do
+        expect(ActionMailer::Base.deliveries.count).to eq(1)
+
+        expect(
+          ActionMailer::Base.deliveries.last.subject
+        ).to eq("Reciparrot has a DELICIOUS recipe for you!")
+        expect(ActionMailer::Base.deliveries.last.to).to match_array(recipient.email)
       end
     end
   end

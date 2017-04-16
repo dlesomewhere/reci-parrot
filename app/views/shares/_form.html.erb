@@ -14,11 +14,12 @@
   <%= f.hidden_field :recipe_id, value: @share.recipe_id %>
 
   <div class="form-group row">
-    <label for="example-text-input" class="col-2 col-form-label">Email</label>
-    <div class="col-10">
-      <%= f.text_field :recipient_email, class: "form-control" %>
+    <div class="col-8">
+      <%= f.text_field :recipient_email, class: "form-control", type: "email", placeholder: "hank.scorpio@globex.com" %>
+    </div>
+
+    <div class="actions">
+      <%= f.submit "Share!", class: "btn btn-primary", type: "submit" %>
     </div>
   </div>
-
-  <button type="Share!" class="btn btn-primary">Submit</button>
 <% end %>

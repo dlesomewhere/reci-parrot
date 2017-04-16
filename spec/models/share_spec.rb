@@ -23,14 +23,8 @@ RSpec.describe Share, type: :model do
   end
 
   describe "when saving" do
-    it "do something" do
-      pending("should test token generation more?")
-    end
-  end
-
-  describe "#generate_token" do
-    it "sets token" do
-      expect { share.generate_token }.to change { share.token }.from(nil).to be_present
+    it "the token is set" do
+      expect { share.save }.to change { share.token }.from(nil).to be_present
     end
   end
 end
