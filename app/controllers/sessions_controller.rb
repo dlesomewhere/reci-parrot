@@ -6,7 +6,6 @@ class SessionsController < ApplicationController
     session[:user_id] = user.id
 
     if share.present?
-      user.recipe_book_pages.create(recipe: share.recipe)
       share.update!(recipient: user)
     end
 

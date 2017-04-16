@@ -1,17 +1,17 @@
 require "rails_helper"
 
 RSpec.describe RecipesController, type: :controller do
-  let(:recipe_book_page) { FactoryGirl.create(:recipe_book_page) }
-  let(:recipe) { recipe_book_page.recipe }
-  let(:user) { recipe_book_page.user }
+  let(:share) { FactoryGirl.create(:share, :with_existing_user) }
+  let(:recipe) { share.recipe }
+  let(:user) { share.recipient }
 
   let(:valid_session) { { user_id: user.id } }
 
   let(:invalid_attributes) { FactoryGirl.attributes_for(:invalid_recipe) }
   let(:valid_attributes) { FactoryGirl.attributes_for(:recipe) }
 
-  let(:other_recipe_book_page) { FactoryGirl.create(:recipe_book_page) }
-  let!(:other_recipe) { other_recipe_book_page.recipe }
+  let(:other_share) { FactoryGirl.create(:share, :with_existing_user) }
+  let!(:other_recipe) { other_share.recipe }
 
   describe "GET #index" do
     it "assigns recipes for user as @recipes" do
@@ -81,7 +81,7 @@ RSpec.describe RecipesController, type: :controller do
 
       it "redirects to the created recipe" do
         post :create, params: {recipe: valid_attributes}, session: valid_session
-        expect(response).to redirect_to(Recipe.last)
+        expect(response).to redirect_to(assigns(:recipe))
       end
     end
 

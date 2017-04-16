@@ -33,7 +33,7 @@ RSpec.describe SessionsController, type: :controller do
           get :create, params: { share_token: share.token }
         }.to change { User.count }.from(1).to(2)
 
-        expect(User.last.recipes).to match_array(share.recipe)
+        expect(User.last.received_recipes).to match_array(share.recipe)
       end
 
       it "updates the share with the newly created user" do

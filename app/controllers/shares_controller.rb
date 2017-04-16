@@ -11,7 +11,6 @@ class SharesController < ApplicationController
     if @share.save
       if @share.recipient.present?
         SharesMailer.notify_existing_user(@share).deliver
-        @share.recipient.recipe_book_pages.create(recipe: @share.recipe)
       else
         SharesMailer.notify_recipient(@share).deliver
       end

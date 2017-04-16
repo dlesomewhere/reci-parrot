@@ -66,7 +66,7 @@ RSpec.describe SharesController, type: :controller do
       end
 
       it "adds the recipe to the recipient" do
-        expect(recipient.reload.recipes).to match_array(assigns(:share).recipe)
+        expect(recipient.reload.received_recipes).to match_array(assigns(:share).recipe)
       end
 
       it "sends an email to the recipient" do

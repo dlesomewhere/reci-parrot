@@ -4,7 +4,7 @@ class RecipesController < ApplicationController
   # GET /recipes
   # GET /recipes.json
   def index
-    @recipes = current_user.recipes
+    @recipes = current_user.received_recipes
   end
 
   # GET /recipes/1
@@ -26,11 +26,17 @@ class RecipesController < ApplicationController
   # POST /recipes
   # POST /recipes.json
   def create
-    @recipe = current_user.recipes.where(url: recipe_params[:url]).
+    @recipe = Recipe.
+      where(url: recipe_params[:url]).
       first_or_create(name: recipe_params[:name])
 
+    share = current_user.received_shares.where(recipe: @recipe).first_or_initialize(
+      sender: current_user,
+      recipient_email: current_user.email
+    )
+
     respond_to do |format|
-      if @recipe.save
+      if @recipe.save && share.save
         format.html { redirect_to @recipe, notice: 'Recipe was successfully created.' }
         format.json { render :show, status: :created, location: @recipe }
       else
@@ -68,7 +74,7 @@ class RecipesController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_recipe
       begin
-        @recipe = current_user.recipes.find(params[:id])
+        @recipe = current_user.received_recipes.find(params[:id])
       rescue ActiveRecord::RecordNotFound
         redirect_to recipes_path
       end
