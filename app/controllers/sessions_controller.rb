@@ -9,7 +9,7 @@ class SessionsController < ApplicationController
       share.update!(recipient: user)
     end
 
-    redirect_to recipes_path
+    redirect_to shares_path
   end
 
   def destroy

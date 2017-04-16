@@ -1,0 +1,16 @@
+<table align="center">
+  <thead>
+    <tr>
+      <th>Recipe</th>
+      <th>Shared By</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @received_shares.each do |share| %>
+      <tr>
+        <td><%= link_to "#{share.recipe.name}", share.recipe %></td>
+        <td><%= share.sender == current_user ? "Mine!" : share.sender.full_name %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

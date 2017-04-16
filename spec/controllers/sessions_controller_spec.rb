@@ -18,7 +18,7 @@ RSpec.describe SessionsController, type: :controller do
     end
 
     it "redirects to the recipes index" do
-      expect(subject).to redirect_to(recipes_path)
+      expect(subject).to redirect_to(shares_path)
     end
 
     context "when request has a share token" do

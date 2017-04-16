@@ -3,6 +3,10 @@ class SharesController < ApplicationController
     @share = Share.new
   end
 
+  def index
+    @received_shares = current_user.received_shares
+  end
+
   def create
     @share = Share.new(share_params)
     @share.sender = current_user

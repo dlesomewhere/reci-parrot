@@ -10,7 +10,7 @@
       <%= @share.recipe.name %> with you on Reciparrot:
     </p>
     <p>
-      <%= link_to "Start using Reciparrot", signin_url(token: @share.token) %>
+      <%= link_to "Start using Reciparrot", signin_url(share_token: @share.token) %>
     </p>
     <p>
       :reciparrot-shuffle:

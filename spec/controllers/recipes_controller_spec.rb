@@ -13,13 +13,6 @@ RSpec.describe RecipesController, type: :controller do
   let(:other_share) { FactoryGirl.create(:share, :with_existing_user) }
   let!(:other_recipe) { other_share.recipe }
 
-  describe "GET #index" do
-    it "assigns recipes for user as @recipes" do
-      get :index, session: valid_session
-      expect(assigns(:recipes)).to eq([recipe])
-    end
-  end
-
   describe "GET #show" do
     it "assigns the requested recipe as @recipe" do
       get :show, params: {id: recipe.to_param}, session: valid_session
@@ -129,30 +122,6 @@ RSpec.describe RecipesController, type: :controller do
         put :update, params: {id: recipe.to_param, recipe: invalid_attributes}, session: valid_session
         expect(response).to render_template("edit")
       end
-    end
-  end
-
-  describe "DELETE #destroy" do
-    before :each do
-      recipe.save!
-    end
-
-    it "destroys the requested recipe" do
-      expect {
-        delete :destroy, params: {id: recipe.to_param}, session: valid_session
-      }.to change(Recipe, :count).by(-1)
-    end
-
-    it "redirects to the recipes list" do
-      delete :destroy, params: {id: recipe.to_param}, session: valid_session
-      expect(response).to redirect_to(recipes_url)
-    end
-
-    it "redirects to recipes_path when recipe belongs to another user" do
-      expect {
-        delete :destroy, params: {id: other_recipe.to_param}, session: valid_session
-      }.to_not change(Recipe, :count)
-      expect(response).to redirect_to(recipes_url)
     end
   end
 end

@@ -11,23 +11,20 @@
   <div class="row">
     <div class="col">
       <p><%= link_to @recipe.url, @recipe.url %></p>
-      <%= link_to "Edit", edit_recipe_path(@recipe) %> |
-      <%= link_to "Remove", @recipe, method: :delete,
-        data: { confirm: "Are you sure you want to remove #{@recipe.name}?" } %>
+      <%= link_to "Edit", edit_recipe_path(@recipe) %>
 
-      <h6 class="mt-5">Shared with:</h6>
-      <table class="table table-sm">
-        <tbody>
-          <% @my_shares.each do |share| %>
-            <tr>
-              <td><%= share.recipient_email %></td>
-            </tr>
-          <% end %>
-        </tbody>
-      </table>
-
+      <% if @my_shares.any? %>
+        <h6 class="mt-5">Shared with:</h6>
+        <table class="table table-sm">
+          <tbody>
+            <% @my_shares.each do |share| %>
+              <tr>
+                <td><%= share.recipient_email %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      <% end %>
     </div>
   </div>
 </div>
-
-

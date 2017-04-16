@@ -7,6 +7,8 @@ class Share < ApplicationRecord
 
   before_create :generate_token
 
+  scope :with_other_user, lambda { where("sender_id != recipient_id OR recipient_id IS NULL") }
+
   def generate_token
      self.token = Digest::SHA1.hexdigest(
        [self.recipe_id, self.sender_id, Time.now].join
