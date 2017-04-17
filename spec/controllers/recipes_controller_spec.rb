@@ -33,9 +33,9 @@ RSpec.describe RecipesController, type: :controller do
       expect(assigns(:my_shares)).to match_array(my_share)
     end
 
-    it "redirects to recipes_path if recipe belongs to another user" do
+    it "redirects to shares_path if recipe belongs to another user" do
       get :show, params: {id: other_recipe.to_param}, session: valid_session
-      expect(response).to redirect_to(recipes_path)
+      expect(response).to redirect_to(shares_path)
     end
   end
 
@@ -52,9 +52,9 @@ RSpec.describe RecipesController, type: :controller do
       expect(assigns(:recipe)).to eq(recipe)
     end
 
-    it "redirects to recipes_path if recipe belongs to another user" do
+    it "redirects to shares_path if recipe belongs to another user" do
       get :edit, params: {id: other_recipe.to_param}, session: valid_session
-      expect(response).to redirect_to(recipes_path)
+      expect(response).to redirect_to(shares_path)
     end
   end
 

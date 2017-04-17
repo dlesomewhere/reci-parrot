@@ -2,7 +2,7 @@ FactoryGirl.define do
   factory :share do
     association :recipe, factory: :recipe
     association :sender, factory: :user
-    recipient_email "recipient@example.test"
+    sequence :recipient_email { |n| "recipient#{n}@example.test" }
   end
 
   trait :with_existing_user do

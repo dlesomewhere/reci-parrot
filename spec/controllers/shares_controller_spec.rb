@@ -15,6 +15,14 @@ RSpec.describe SharesController, type: :controller do
         }.to change { Share.count }.by(1)
       end
 
+      it "doesn't duplicate the same share" do
+        post :create, params: { share: valid_attributes }, session: valid_session
+
+        expect {
+          post :create, params: { share: valid_attributes }, session: valid_session
+        }.to_not change { Share.count }
+      end
+
       it "assigns newly created Share as @share" do
         post :create, params: { share: valid_attributes }, session: valid_session
 

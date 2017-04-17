@@ -8,7 +8,7 @@ class SharesController < ApplicationController
   end
 
   def create
-    @share = Share.new(share_params)
+    @share = Share.where(share_params).first_or_initialize
     @share.sender = current_user
     @share.recipient = User.where(email: @share.recipient_email).first
 
@@ -18,9 +18,11 @@ class SharesController < ApplicationController
       else
         SharesMailer.notify_recipient(@share).deliver
       end
+
+      flash[:notice] = "You've shared a recipe! :party-parrot-shuffle:"
     else
-      # something went wrong
-      # flash an error?
+
+      flash[:error] = @share.errors.full_messages.to_sentence
     end
 
     redirect_to @share.recipe

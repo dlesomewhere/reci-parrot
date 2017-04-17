@@ -22,6 +22,27 @@ RSpec.describe Share, type: :model do
     expect(share).to be_invalid
   end
 
+  it "is invalid when the same recipe has the same recipient_email" do
+    share.save!
+    new_share = FactoryGirl.build(:share, recipe: share.recipe, recipient_email: share.recipient_email)
+    expect(new_share).to be_invalid
+  end
+
+  it "is invalid when the same recipe has the same recipient" do
+    recipient = FactoryGirl.create(:user)
+    share.update(recipient: recipient)
+    new_share = FactoryGirl.build(:share, recipe: share.recipe, recipient: recipient)
+
+    expect(new_share).to be_invalid
+  end
+
+  it "is valid when the same recipe has multiple unknown recipients" do
+    share.update(recipient: nil)
+    new_share = FactoryGirl.build(:share, recipe: share.recipe, recipient: nil)
+
+    expect(new_share).to be_valid
+  end
+
   describe "when saving" do
     it "the token is set" do
       expect { share.save }.to change { share.token }.from(nil).to be_present

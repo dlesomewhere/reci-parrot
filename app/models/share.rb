@@ -4,6 +4,8 @@ class Share < ApplicationRecord
   belongs_to :recipient, class_name: "User", optional: true
 
   validates :recipient_email, presence: true
+  validates :recipient_email, uniqueness: { scope: :recipe }
+  validates :recipient, uniqueness: { scope: :recipe }, allow_nil: true
 
   before_create :generate_token
 
