@@ -1,0 +1,7 @@
+Ahoy-hoy!
+
+<%= @share.sender.full_name %> shared a DELICIOUS recipe for <%= @share.recipe.name %> with you on Reciparrot:
+
+<%= "#{signin_url}?share_token=#{@share.token}" %>
+
+:reciparrot-shuffle:

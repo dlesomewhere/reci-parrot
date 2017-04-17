@@ -1,0 +1,5 @@
+<% if @received_shares.any? %>
+  <%= render partial: "shares/table" %>
+<% else %>
+  <%= render partial: "shares/sadparrot" %>
+<% end %>

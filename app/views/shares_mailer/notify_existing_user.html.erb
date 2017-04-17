@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <h3>Ahoy-hoy <%= @share.recipient.first_name %>!</h3>
+    <p>
+      <%= @share.sender.full_name %> shared a DELICIOUS recipe for
+      <%= @share.recipe.name %> with you on Reciparrot:
+    </p>
+    <p>
+      <%= link_to "Login to see your recipes", signin_url %>
+    </p>
+    <p>
+      :reciparrot-shuffle:
+   </p>
+  </body>
+</html>

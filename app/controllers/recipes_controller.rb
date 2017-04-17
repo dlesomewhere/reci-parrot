@@ -1,15 +1,17 @@
 class RecipesController < ApplicationController
-  before_action :set_recipe, only: [:show, :edit, :update, :destroy]
+  before_action :set_recipe, only: [:show, :edit, :update]
 
   # GET /recipes
   # GET /recipes.json
   def index
-    @recipes = current_user.recipes
+    @recipes = current_user.received_recipes
   end
 
   # GET /recipes/1
   # GET /recipes/1.json
   def show
+    @share = Share.new(recipe: @recipe, sender: current_user)
+    @my_shares = Share.with_other_user.where(sender: current_user, recipe: @recipe)
   end
 
   # GET /recipes/new
@@ -24,11 +26,17 @@ class RecipesController < ApplicationController
   # POST /recipes
   # POST /recipes.json
   def create
-    @recipe = current_user.recipes.where(url: recipe_params[:url]).
-      first_or_create(name: recipe_params[:name])
+    @recipe = Recipe.
+      where(url: recipe_params[:url], name: recipe_params[:name]).
+      first_or_create
+
+    share = current_user.received_shares.where(recipe: @recipe).first_or_initialize(
+      sender: current_user,
+      recipient_email: current_user.email
+    )
 
     respond_to do |format|
-      if @recipe.save
+      if @recipe.save && share.save
         format.html { redirect_to @recipe, notice: 'Recipe was successfully created.' }
         format.json { render :show, status: :created, location: @recipe }
       else
@@ -52,23 +60,13 @@ class RecipesController < ApplicationController
     end
   end
 
-  # DELETE /recipes/1
-  # DELETE /recipes/1.json
-  def destroy
-    @recipe.destroy
-    respond_to do |format|
-      format.html { redirect_to recipes_url, notice: 'Recipe was successfully destroyed.' }
-      format.json { head :no_content }
-    end
-  end
-
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_recipe
       begin
-        @recipe = current_user.recipes.find(params[:id])
+        @recipe = current_user.received_recipes.find(params[:id])
       rescue ActiveRecord::RecordNotFound
-        redirect_to recipes_path
+        redirect_to shares_path
       end
     end
 

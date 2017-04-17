@@ -1,5 +1,15 @@
 class Recipe < ApplicationRecord
-  belongs_to :user
+  has_many :shares
+  has_many :users, through: :shares, source: :recipient
 
-  validates :user, :name, :url, presence: true
+  validates :name, :url, presence: true
+  validates :url, url: true
+
+  def editable?
+    !locked?
+  end
+
+  def locked?
+    shares.merge(Share.with_other_user).any?
+  end
 end

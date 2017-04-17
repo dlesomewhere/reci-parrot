@@ -28,6 +28,11 @@ RSpec.describe User, type: :model do
     expect(new_user).to be_valid
   end
 
+  it "is invalid when email doesn't look like an email address" do
+    user.email = "dave.example.test"
+    expect(user).to be_invalid
+  end
+
   describe ".from_omniauth" do
     subject { User.from_omniauth(OmniAuth.config.mock_auth[:google_oauth2]) }
 
@@ -62,6 +67,12 @@ RSpec.describe User, type: :model do
 
     it "creates a user with the expected oauth_expires_at" do
       expect(subject.oauth_expires_at).to eq(Time.at(1354920555))
+    end
+  end
+
+  describe "#full_name" do
+    it "is first_name last_name" do
+      expect(subject.full_name).to eq("#{subject.first_name} #{subject.last_name}")
     end
   end
 end

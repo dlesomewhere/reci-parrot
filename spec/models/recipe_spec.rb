@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.describe Recipe, type: :model do
-  let(:recipe) { FactoryGirl.build(:recipe) }
+  let(:recipe) { FactoryGirl.create(:recipe) }
 
   it "is valid with default factory attributes" do
     expect(recipe).to be_valid
@@ -17,8 +17,32 @@ RSpec.describe Recipe, type: :model do
     expect(recipe).to be_invalid
   end
 
-  it "is invalid when user is missing" do
-    recipe.user = nil
+  it "is invalid when url doesn't look like a url" do
+    recipe.url = "example.com"
     expect(recipe).to be_invalid
+  end
+
+  describe "#editable?" do
+    it "is true when the recipe hasn't been shared with other users yet" do
+      recipe.shares << FactoryGirl.create(:share, :with_self)
+      expect(recipe.editable?).to eq(true)
+    end
+
+    it "is false when the recipe has been shared with other users" do
+      recipe.shares << FactoryGirl.create(:share, :with_existing_user)
+      expect(recipe.editable?).to eq(false)
+    end
+  end
+
+  describe "locked?" do
+    it "is false when the recipe hasn't been shared with other users yet" do
+      recipe.shares << FactoryGirl.create(:share, :with_self)
+      expect(recipe.locked?).to eq(false)
+    end
+
+    it "is true when the recipe has been shared with other users" do
+      recipe.shares << FactoryGirl.create(:share, :with_existing_user)
+      expect(recipe.locked?).to eq(true)
+    end
   end
 end

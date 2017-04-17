@@ -3,6 +3,7 @@ require "rails_helper"
 RSpec.describe SessionsController, type: :controller do
   before :each do
     request.env["omniauth.auth"] = OmniAuth.config.mock_auth[:google_oauth2]
+    request.env["omniauth.params"] = { }
   end
 
   describe "#create" do
@@ -17,7 +18,29 @@ RSpec.describe SessionsController, type: :controller do
     end
 
     it "redirects to the recipes index" do
-      expect(subject).to redirect_to(recipes_path)
+      expect(subject).to redirect_to(shares_path)
+    end
+
+    context "when request has a share token" do
+      let!(:share) { FactoryGirl.create(:share) }
+
+      before :each do
+        request.env["omniauth.params"] = { "share_token" => share.token }
+      end
+
+      it "creates a new user with the shared recipe" do
+        expect {
+          get :create, params: { share_token: share.token }
+        }.to change { User.count }.from(1).to(2)
+
+        expect(User.last.received_recipes).to match_array(share.recipe)
+      end
+
+      it "updates the share with the newly created user" do
+        expect(share.recipient).to_not be_present
+        get :create, params: { share_token: share.token }
+        expect(share.reload.recipient).to eq(User.last)
+      end
     end
   end
 

@@ -1,7 +1,36 @@
-<h2><%= @recipe.name %></h2>
-<p><%= link_to @recipe.url, @recipe.url %></td></p>
+<div class="container">
+  <% flash.each do |key, value| %>
+    <p><%= "#{key}: #{value}" %></p>
+  <% end %>
 
-<%= link_to "My Recipes", recipes_path %> |
-<%= link_to "Edit", edit_recipe_path(@recipe) %> |
-<%= link_to "Remove", @recipe, method: :delete,
-  data: { confirm: "Are you sure you want to remove #{@recipe.name}?" } %>
+  <div class="row">
+    <div class="col">
+      <h2><%= @recipe.name %></h2>
+    </div>
+    <div class="col">
+      <%= render "shares/form", share: @share %>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <p><%= link_to @recipe.url, @recipe.url %></p>
+      <% if @recipe.editable? %>
+        <%= link_to "Edit", edit_recipe_path(@recipe) %>
+      <% end %>
+
+      <% if @my_shares.any? %>
+        <h6 class="mt-5">Shared with:</h6>
+        <table class="table">
+          <tbody>
+            <% @my_shares.each do |share| %>
+              <tr>
+                <td><%= share.recipient_email %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      <% end %>
+    </div>
+  </div>
+</div>

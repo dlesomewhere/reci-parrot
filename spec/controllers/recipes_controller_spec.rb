@@ -1,20 +1,17 @@
 require "rails_helper"
 
 RSpec.describe RecipesController, type: :controller do
-  let(:user) { FactoryGirl.create(:user) }
+  let(:share) { FactoryGirl.create(:share, :with_existing_user) }
+  let(:recipe) { share.recipe }
+  let(:user) { share.recipient }
+
   let(:valid_session) { { user_id: user.id } }
 
   let(:invalid_attributes) { FactoryGirl.attributes_for(:invalid_recipe) }
   let(:valid_attributes) { FactoryGirl.attributes_for(:recipe) }
-  let(:recipe) { FactoryGirl.create(:recipe, user: user) }
-  let!(:other_recipe) { FactoryGirl.create(:recipe) }
 
-  describe "GET #index" do
-    it "assigns recipes for user as @recipes" do
-      get :index, session: valid_session
-      expect(assigns(:recipes)).to eq([recipe])
-    end
-  end
+  let(:other_share) { FactoryGirl.create(:share, :with_existing_user) }
+  let!(:other_recipe) { other_share.recipe }
 
   describe "GET #show" do
     it "assigns the requested recipe as @recipe" do
@@ -22,9 +19,23 @@ RSpec.describe RecipesController, type: :controller do
       expect(assigns(:recipe)).to eq(recipe)
     end
 
-    it "redirects to recipes_path if recipe belongs to another user" do
+    it "assigns a new share as @share" do
+      get :show, params: {id: recipe.to_param}, session: valid_session
+      expect(assigns(:share)).to be_a_new(Share)
+      expect(assigns(:share).recipe).to eq(recipe)
+      expect(assigns(:share).sender).to eq(user)
+    end
+
+    it "assigns shares made by me to @my_shares" do
+      FactoryGirl.create(:share, recipe: recipe)
+      my_share = FactoryGirl.create(:share, sender: user, recipe: recipe)
+      get :show, params: {id: recipe.to_param}, session: valid_session
+      expect(assigns(:my_shares)).to match_array(my_share)
+    end
+
+    it "redirects to shares_path if recipe belongs to another user" do
       get :show, params: {id: other_recipe.to_param}, session: valid_session
-      expect(response).to redirect_to(recipes_path)
+      expect(response).to redirect_to(shares_path)
     end
   end
 
@@ -41,9 +52,9 @@ RSpec.describe RecipesController, type: :controller do
       expect(assigns(:recipe)).to eq(recipe)
     end
 
-    it "redirects to recipes_path if recipe belongs to another user" do
+    it "redirects to shares_path if recipe belongs to another user" do
       get :edit, params: {id: other_recipe.to_param}, session: valid_session
-      expect(response).to redirect_to(recipes_path)
+      expect(response).to redirect_to(shares_path)
     end
   end
 
@@ -63,7 +74,7 @@ RSpec.describe RecipesController, type: :controller do
 
       it "redirects to the created recipe" do
         post :create, params: {recipe: valid_attributes}, session: valid_session
-        expect(response).to redirect_to(Recipe.last)
+        expect(response).to redirect_to(assigns(:recipe))
       end
     end
 
@@ -111,30 +122,6 @@ RSpec.describe RecipesController, type: :controller do
         put :update, params: {id: recipe.to_param, recipe: invalid_attributes}, session: valid_session
         expect(response).to render_template("edit")
       end
-    end
-  end
-
-  describe "DELETE #destroy" do
-    before :each do
-      recipe.save!
-    end
-
-    it "destroys the requested recipe" do
-      expect {
-        delete :destroy, params: {id: recipe.to_param}, session: valid_session
-      }.to change(Recipe, :count).by(-1)
-    end
-
-    it "redirects to the recipes list" do
-      delete :destroy, params: {id: recipe.to_param}, session: valid_session
-      expect(response).to redirect_to(recipes_url)
-    end
-
-    it "redirects to recipes_path when recipe belongs to another user" do
-      expect {
-        delete :destroy, params: {id: other_recipe.to_param}, session: valid_session
-      }.to_not change(Recipe, :count)
-      expect(response).to redirect_to(recipes_url)
     end
   end
 end
