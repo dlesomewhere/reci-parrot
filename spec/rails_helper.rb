@@ -65,7 +65,7 @@ RSpec.configure do |config|
       uid: "123456789",
       info: {
         name: "John Doe",
-        email: "john@company_name.com",
+        email: "john@companyname.com",
         first_name: "John",
         last_name: "Doe",
         image: "https://lh3.googleusercontent.com/url/photo.jpg"

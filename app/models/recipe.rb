@@ -3,6 +3,7 @@ class Recipe < ApplicationRecord
   has_many :users, through: :shares, source: :recipient
 
   validates :name, :url, presence: true
+  validates :url, url: true
 
   def editable?
     !locked?

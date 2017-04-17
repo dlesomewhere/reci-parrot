@@ -2,6 +2,7 @@ class User < ApplicationRecord
   validates :uid, :provider, :email, presence: true
   validates :uid, uniqueness: { scope: :provider }
   validates :email, uniqueness: true
+  validates :email, email_format: true
 
   has_many :sent_shares, foreign_key: :sender_id, class_name: "Share"
   has_many :sent_recipes, through: :sent_shares, source: :recipe

@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :recipe do
-    url "MyString"
+    url "http://www.recipes.test/recipe"
     name "MyString"
   end
 

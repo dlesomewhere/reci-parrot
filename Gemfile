@@ -58,3 +58,6 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem 'bootstrap', '~> 4.0.0.alpha6'
 gem 'omniauth-google-oauth2', '~> 0.4.1'
+
+gem "validate_url"
+gem "validates_email_format_of"

@@ -17,6 +17,11 @@ RSpec.describe Recipe, type: :model do
     expect(recipe).to be_invalid
   end
 
+  it "is invalid when url doesn't look like a url" do
+    recipe.url = "example.com"
+    expect(recipe).to be_invalid
+  end
+
   describe "#editable?" do
     it "is true when the recipe hasn't been shared with other users yet" do
       recipe.shares << FactoryGirl.create(:share, :with_self)

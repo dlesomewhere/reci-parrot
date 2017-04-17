@@ -28,6 +28,11 @@ RSpec.describe User, type: :model do
     expect(new_user).to be_valid
   end
 
+  it "is invalid when email doesn't look like an email address" do
+    user.email = "dave.example.test"
+    expect(user).to be_invalid
+  end
+
   describe ".from_omniauth" do
     subject { User.from_omniauth(OmniAuth.config.mock_auth[:google_oauth2]) }
 
