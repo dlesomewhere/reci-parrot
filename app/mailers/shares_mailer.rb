@@ -4,7 +4,7 @@ class SharesMailer < ApplicationMailer
 
     mail(
       to: share.recipient_email,
-      from: "no-reply@reciparrot.com",
+      from: "mg@reciparrot.com",
       subject: "Reciparrot has a DELICIOUS recipe for you!"
     )
   end
@@ -14,7 +14,7 @@ class SharesMailer < ApplicationMailer
 
     mail(
       to: share.recipient_email,
-      from: "no-reply@reciparrot.com",
+      from: "mg@reciparrot.com",
       subject: "#{@share.sender.full_name} shared a DELICIOUS recipe with you!"
     )
   end

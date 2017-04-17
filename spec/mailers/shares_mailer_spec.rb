@@ -16,7 +16,7 @@ RSpec.describe SharesMailer, type: :mailer do
     end
 
     it "has the expected sender" do
-      expect(subject.from).to match_array("no-reply@reciparrot.com")
+      expect(subject.from).to match_array("mg@reciparrot.com")
     end
 
     it "has the expected subject line" do
@@ -40,7 +40,7 @@ RSpec.describe SharesMailer, type: :mailer do
     end
 
     it "has the expected sender" do
-      expect(subject.from).to match_array("no-reply@reciparrot.com")
+      expect(subject.from).to match_array("mg@reciparrot.com")
     end
 
     it "has the expected subject line" do
