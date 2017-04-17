@@ -1,5 +1,5 @@
 <%= form_for(recipe) do |f| %>
-  <% if recipe.shares.merge(Share.with_other_user).any? %>
+  <% if recipe.locked? %>
     <fieldset disabled>
   <% end %>
 
@@ -33,7 +33,7 @@
     <%= f.submit %>
   </div>
 
-  <% if recipe.shares.any? %>
+  <% if recipe.locked? %>
     </fieldset>
   <% end %>
 <% end %>

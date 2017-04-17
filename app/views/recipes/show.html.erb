@@ -15,11 +15,13 @@
   <div class="row">
     <div class="col">
       <p><%= link_to @recipe.url, @recipe.url %></p>
-      <%= link_to "Edit", edit_recipe_path(@recipe) %>
+      <% if @recipe.editable? %>
+        <%= link_to "Edit", edit_recipe_path(@recipe) %>
+      <% end %>
 
       <% if @my_shares.any? %>
         <h6 class="mt-5">Shared with:</h6>
-        <table class="table table-sm">
+        <table class="table">
           <tbody>
             <% @my_shares.each do |share| %>
               <tr>

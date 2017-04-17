@@ -5,6 +5,11 @@ FactoryGirl.define do
     sequence :recipient_email { |n| "recipient#{n}@example.test" }
   end
 
+  trait :with_self do
+    recipient { sender }
+    recipient_email { sender.email }
+  end
+
   trait :with_existing_user do
     association :recipient, factory: :user
   end
