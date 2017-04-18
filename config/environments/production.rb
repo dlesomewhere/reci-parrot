@@ -56,14 +56,14 @@ Rails.application.configure do
   # config.active_job.queue_adapter     = :resque
   # config.active_job.queue_name_prefix = "reci-parrot_#{Rails.env}"
   config.action_mailer.perform_caching = false
-  config.action_mailer.default_url_options = { host: "reciparrot.com" }
+  config.action_mailer.default_url_options = { host: "www.reciparrot.com" }
 
   config.action_mailer.smtp_settings = {
-    :port           => ENV['MAILGUN_SMTP_PORT'],
-    :address        => ENV['MAILGUN_SMTP_SERVER'],
-    :user_name      => ENV['MAILGUN_SMTP_LOGIN'],
-    :password       => ENV['MAILGUN_SMTP_PASSWORD'],
-    :domain         => 'reciparrot.com',
+    :port           => ENV["MAILGUN_SMTP_PORT"],
+    :address        => ENV["MAILGUN_SMTP_SERVER"],
+    :user_name      => ENV["MAILGUN_SMTP_LOGIN"],
+    :password       => ENV["MAILGUN_SMTP_PASSWORD"],
+    :domain         => "www.reciparrot.com",
     :authentication => :plain,
   }
   config.action_mailer.delivery_method = :smtp
