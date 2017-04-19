@@ -3,6 +3,7 @@
     <tr>
       <th>Recipe</th>
       <th>Shared By</th>
+      <th>:Parrots:</th>
     </tr>
   </thead>
   <tbody>
@@ -10,6 +11,7 @@
       <tr>
         <td><%= link_to "#{share.recipe.name}", share.recipe %></td>
         <td><%= share.sender == current_user ? "Mine!" : share.sender.full_name %></td>
+        <td><%= share.number_of_users_with_recipe %></td>
       </tr>
     <% end %>
   </tbody>

@@ -48,4 +48,14 @@ RSpec.describe Share, type: :model do
       expect { share.save }.to change { share.token }.from(nil).to be_present
     end
   end
+
+  describe "#number_of_users_with_recipe" do
+    it "is the number of distinct users that have access to the recipe" do
+      share = FactoryGirl.create(:share, :with_self)
+      FactoryGirl.create(:share, :with_existing_user, recipe: share.recipe)
+      FactoryGirl.create(:share, recipe: share.recipe)
+
+      expect(share.number_of_users_with_recipe).to eq(2)
+    end
+  end
 end
