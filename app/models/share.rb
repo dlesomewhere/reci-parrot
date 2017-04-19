@@ -11,6 +11,11 @@ class Share < ApplicationRecord
 
   scope :with_other_user, lambda { where("sender_id != recipient_id OR recipient_id IS NULL") }
 
+  def number_of_users_with_recipe
+    @number_of_users_with_recipe ||= User.joins(:received_shares).
+      where(shares: { recipe_id: recipe.id }).count
+  end
+
   def generate_token
      self.token = Digest::SHA1.hexdigest(
        [self.recipe_id, self.sender_id, Time.now].join
