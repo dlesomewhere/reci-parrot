@@ -2,11 +2,11 @@ class SessionsController < ApplicationController
   skip_before_action :require_login, only: [:create]
 
   def create
-    user = User.from_omniauth(request.env["omniauth.auth"])
-    session[:user_id] = user.id
+    auth = Authorization.from_omniauth(request.env["omniauth.auth"])
+    session[:user_id] = auth.user.id
 
     if share.present?
-      share.update!(recipient: user)
+      share.update!(recipient: auth.user)
     end
 
     redirect_to shares_path
