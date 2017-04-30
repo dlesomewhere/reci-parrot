@@ -1,5 +1,19 @@
 class SessionsController < ApplicationController
-  skip_before_action :require_login, only: [:create]
+  skip_before_action :require_login, only: [:create, :new, :login_attempt]
+
+  def new
+  end
+
+  def login_attempt
+    user = User.where(email: params[:email]).first
+
+    if user && user.authenticate(params[:password])
+      session[:user_id] = user.id
+      redirect_to shares_path
+    else
+      redirect_to login_path
+    end
+  end
 
   def create
     auth = Authorization.from_omniauth(request.env["omniauth.auth"])
