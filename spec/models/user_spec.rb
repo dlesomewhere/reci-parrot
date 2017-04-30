@@ -8,29 +8,14 @@ RSpec.describe User, type: :model do
     expect(user).to be_invalid
   end
 
-  it "is invalid if uid is missing" do
-    user.uid = nil
-    expect(user).to be_invalid
-  end
-
-  it "is invalid if provider is missing" do
-    user.provider = nil
-    expect(user).to be_invalid
-  end
-
-  it "is invalid if uid is duplicated with the same provider" do
-    new_user = FactoryGirl.build(:user, uid: user.uid, provider: user.provider)
-    expect(new_user).to be_invalid
-  end
-
-  it "is valid if uid is duplicated with different providers" do
-    new_user = FactoryGirl.build(:user, uid: user.uid, provider: "other provider")
-    expect(new_user).to be_valid
-  end
-
   it "is invalid when email doesn't look like an email address" do
     user.email = "dave.example.test"
     expect(user).to be_invalid
+  end
+
+  it "is invalid when email is duplicated" do
+    new_user = FactoryGirl.build(:user, email: user.email)
+    expect(new_user).to be_invalid
   end
 
   describe ".from_omniauth" do
@@ -53,20 +38,8 @@ RSpec.describe User, type: :model do
       expect(subject.last_name).to eq("Doe")
     end
 
-    it "creates a user with the expected provider" do
-      expect(subject.provider).to eq("google_oauth2")
-    end
-
-    it "creates a user with the expected uid" do
-      expect(subject.uid).to eq("123456789")
-    end
-
-    it "creates a user with the expected oauth_token" do
-      expect(subject.oauth_token).to eq("token")
-    end
-
-    it "creates a user with the expected oauth_expires_at" do
-      expect(subject.oauth_expires_at).to eq(Time.at(1354920555))
+    it "creates a user with the expected email" do
+      expect(subject.email).to eq("john@companyname.com")
     end
   end
 
