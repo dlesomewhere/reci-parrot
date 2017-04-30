@@ -16,7 +16,19 @@
 
 <div class="row justify-content-center mt-3">
   <div class="col-8">
-  <%= form_for(:user) do |f| %>
+    <%= form_for(:user) do |f| %>
+      <% if @user.errors.any? %>
+        <div id="error_explanation">
+          <h2>You need to fix some errors:</h2>
+
+          <ul>
+            <% @user.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
       <div class="form-group row">
         <label for="example-password-input" class="col-2 col-form-label">First Name</label>
         <div class="col-6">
@@ -42,6 +54,9 @@
         <label for="example-password-input" class="col-2 col-form-label">Password</label>
         <div class="col-6">
           <%= f.text_field :password, class: "form-control", type: "password" %>
+          <p id="passwordHelpBlock" class="form-text text-muted">
+            Must be more than 6 characters.
+          </p>
         </div>
       </div>
 

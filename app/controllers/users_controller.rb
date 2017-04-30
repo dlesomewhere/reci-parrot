@@ -8,13 +8,10 @@ class UsersController < ApplicationController
   def create
     @user = User.new(user_params)
 
-    # FIXME: handle the error if email is already taken a bit more gracefully???
-    if @user.save!
-      flash[:notice] = "You've signed up! :party-parrot-shuffle:"
+    if @user.save
       session[:user_id] = @user.id
       redirect_to shares_path
     else
-      flash[:notice] = "Error!"
       render :new
     end
   end

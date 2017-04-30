@@ -1,4 +1,7 @@
 class User < ApplicationRecord
+  has_secure_password
+
+  validates :password, length: { minimum: 6 }, allow_nil: true
   validates :email, uniqueness: true
   validates :email, email_format: true
 
@@ -7,8 +10,6 @@ class User < ApplicationRecord
 
   has_many :received_shares, foreign_key: :recipient_id, class_name: "Share"
   has_many :received_recipes, through: :received_shares, source: :recipe
-
-  has_secure_password
 
   has_many :authorizations
 

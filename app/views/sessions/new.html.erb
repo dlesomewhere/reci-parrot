@@ -1,24 +1,39 @@
-<h1>Sign me in!</h1>
+<div class="row justify-content-center mt-3">
+  <div class="col-8">
+    <h2 class="mt-2">
+      Sign in to see your recipes
+    </h2>
 
-<%= form_tag(:login) do %>
-  <div class="form-group row">
-    <label for="example-password-input" class="col-2 col-form-label">Email</label>
-    <div class="col-8">
-      <%= text_field_tag :email, nil, class: "form-control", type: "email", placeholder: "hank.scorpio@globex.com" %>
+    <div class="mb-4 mt-3 offset-sm-2 col-sm-10">
+      <%= image_submit_tag "google_signin_buttons/web/1x/btn_google_signin_dark_normal_web.png" %>
     </div>
-  </div>
 
-  <div class="form-group row">
-    <label for="example-password-input" class="col-2 col-form-label">Password</label>
-    <div class="col-8">
-      <%= text_field_tag :password, nil, class: "form-control", type: "password" %>
-    </div>
+    <h6 class="mt-2">
+      Or if you signed up with a password:
+    </h6>
   </div>
+</div>
 
-  <div class="actions">
-    <%= submit_tag "Login!", class: "btn btn-primary", type: "submit" %>
+<div class="row justify-content-center mt-3">
+  <div class="col-8">
+    <%= form_tag(:login) do %>
+      <div class="form-group row">
+        <label for="example-password-input" class="col-2 col-form-label">Email</label>
+        <div class="col-6">
+          <%= text_field_tag :email, nil, class: "form-control", type: "email", placeholder: "hank.scorpio@globex.com" %>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label for="example-password-input" class="col-2 col-form-label">Password</label>
+        <div class="col-6">
+          <%= text_field_tag :password, nil, class: "form-control", type: "password" %>
+        </div>
+      </div>
+
+      <div class="mb-4 offset-sm-2 col-sm-10">
+        <%= submit_tag "Sign in", class: "btn btn-primary", type: "submit" %>
+      </div>
+    <% end %>
   </div>
-<% end %>
-
-<h2>Use Google</h2>
-<%= link_to "Login", "/auth/google_oauth2", id: "sign_in" %>
+</div>
