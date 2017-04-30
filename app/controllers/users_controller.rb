@@ -10,6 +10,7 @@ class UsersController < ApplicationController
 
     if @user.save
       session[:user_id] = @user.id
+      share.update!(recipient: @user) if share.present?
       redirect_to shares_path
     else
       render :new
@@ -20,5 +21,9 @@ class UsersController < ApplicationController
 
   def user_params
     params.require(:user).permit(:first_name, :last_name, :email, :password, :password_confirmation)
+  end
+
+  def share
+    @share ||= Share.find_by(token: params[:share_token])
   end
 end
