@@ -38,6 +38,6 @@ class SessionsController < ApplicationController
   end
 
   def share_token
-    @share_token ||= request.env["omniauth.params"]&.fetch("share_token", nil)
+    cookies[:share_token]
   end
 end

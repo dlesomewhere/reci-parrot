@@ -2,6 +2,7 @@ class UsersController < ApplicationController
   skip_before_action :require_login, only: [:new, :create]
 
   def new
+    update_share_token_cookie
     @user = User.new
   end
 
@@ -24,6 +25,15 @@ class UsersController < ApplicationController
   end
 
   def share
-    @share ||= Share.find_by(token: params[:share_token])
+    @share ||= Share.find_by(token: share_token)
+  end
+
+  def share_token
+    update_share_token_cookie
+    cookies[:share_token]
+  end
+
+  def update_share_token_cookie
+    cookies[:share_token] = params[:share_token] if params[:share_token].present?
   end
 end

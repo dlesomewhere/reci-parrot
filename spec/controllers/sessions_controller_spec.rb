@@ -46,11 +46,11 @@ RSpec.describe SessionsController, type: :controller do
       expect(subject).to redirect_to(shares_path)
     end
 
-    context "when request has a share token" do
+    context "when the share token cookie is set" do
       let!(:share) { FactoryGirl.create(:share) }
 
       before :each do
-        request.env["omniauth.params"] = { "share_token" => share.token }
+        cookies[:share_token] = share.token
       end
 
       it "creates a new user with the shared recipe" do
