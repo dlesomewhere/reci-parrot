@@ -18,7 +18,7 @@ RSpec.describe SessionsController, type: :controller do
         expect(response).to redirect_to(shares_path)
       end
 
-      it "sets the current user" do
+      it "sets the user_id in the session" do
         expect(session[:user_id]).to eq(existing_user.id)
       end
     end

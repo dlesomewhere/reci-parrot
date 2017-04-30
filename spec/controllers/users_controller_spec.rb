@@ -13,10 +13,10 @@ RSpec.describe UsersController, type: :controller do
 
   describe "POST #create" do
     context "with valid params" do
+      let(:subject) { post :create, params: { user: valid_attributes } }
+
       it "creates a new user" do
-        expect {
-          post :create, params: { user: valid_attributes }
-        }.to change(User, :count).by(1)
+        expect { subject }.to change(User, :count).by(1)
       end
 
       it "assigns newly created user as @user" do
@@ -26,8 +26,11 @@ RSpec.describe UsersController, type: :controller do
       end
 
       it "redirects to the recipes index" do
-        post :create, params: { user: valid_attributes }
         expect(subject).to redirect_to(shares_path)
+      end
+
+      it "sets the user_id in the session" do
+        expect { subject }.to change { session[:user_id] }.from(nil).to be_present
       end
     end
 
