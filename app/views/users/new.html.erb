@@ -1,0 +1,77 @@
+<div class="row justify-content-center mt-3">
+  <div class="col-8">
+    <h2 class="mt-2">
+      Signing up lets you share recipes
+    </h2>
+
+    <%= form_tag signin_path do %>
+      <div class="mb-4 mt-3 offset-sm-2 col-sm-10">
+        <%= image_submit_tag "google_signin_buttons/web/1x/btn_google_signin_dark_normal_web.png" %>
+      </div>
+    <% end %>
+
+    <h6 class="mt-2">
+      Or if you prefer, sign up by hand by hand:
+    </h6>
+  </div>
+</div>
+
+<div class="row justify-content-center mt-3">
+  <div class="col-8">
+    <%= form_for(:user) do |f| %>
+      <% if @user.errors.any? %>
+        <div id="error_explanation">
+          <h2>You need to fix some errors:</h2>
+
+          <ul>
+            <% @user.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <div class="form-group row">
+        <label for="example-password-input" class="col-2 col-form-label">First Name</label>
+        <div class="col-6">
+          <%= f.text_field :first_name, class: "form-control", type: "text", placeholder: "Hank" %>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label for="example-password-input" class="col-2 col-form-label">Last Name</label>
+        <div class="col-6">
+          <%= f.text_field :last_name, class: "form-control", type: "text", placeholder: "Scorpio" %>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label for="example-password-input" class="col-2 col-form-label">Email</label>
+        <div class="col-6">
+          <%= f.text_field :email, class: "form-control", type: "email", placeholder: "hank.scorpio@globex.com" %>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label for="example-password-input" class="col-2 col-form-label">Password</label>
+        <div class="col-6">
+          <%= f.text_field :password, class: "form-control", type: "password" %>
+          <p id="passwordHelpBlock" class="form-text text-muted">
+            Must be more than 6 characters.
+          </p>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label for="example-password-input" class="col-2 col-form-label">Password Confirmation</label>
+        <div class="col-6">
+          <%= f.text_field :password_confirmation, class: "form-control", type: "password" %>
+        </div>
+      </div>
+
+      <div class="mb-4 offset-sm-2 col-sm-10">
+        <%= f.submit "Start sharing", class: "btn btn-primary", type: "submit" %>
+      </div>
+    <% end %>
+  </div>
+</div>

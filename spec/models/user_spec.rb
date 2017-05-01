@@ -18,6 +18,11 @@ RSpec.describe User, type: :model do
     expect(new_user).to be_invalid
   end
 
+  it "is invalid if the password has less than six characters" do
+    user.password = user.password_confirmation = "a" * 5
+    expect(user).to be_invalid
+  end
+
   describe ".from_omniauth" do
     subject { User.from_omniauth(OmniAuth.config.mock_auth[:google_oauth2]) }
 

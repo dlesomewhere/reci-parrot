@@ -6,6 +6,31 @@ RSpec.describe SessionsController, type: :controller do
     request.env["omniauth.params"] = { }
   end
 
+  describe "POST #login_attempt" do
+    let!(:existing_user) { FactoryGirl.create(:user, password: "password", password_confirmation: "password") }
+
+    context "when the provided email and password match a user" do
+      before :each do
+        post :login_attempt, params: { email: existing_user.email, password: "password" }
+      end
+
+      it "redirects to the recipes index" do
+        expect(response).to redirect_to(shares_path)
+      end
+
+      it "sets the user_id in the session" do
+        expect(session[:user_id]).to eq(existing_user.id)
+      end
+    end
+
+    context "when the provided email and password don't match a user" do
+      it "redirects to the login_path" do
+        post :login_attempt, params: { email: existing_user.email, password: "123456" }
+        expect(response).to redirect_to(login_path)
+      end
+    end
+  end
+
   describe "#create" do
     subject { get :create }
 
@@ -21,11 +46,11 @@ RSpec.describe SessionsController, type: :controller do
       expect(subject).to redirect_to(shares_path)
     end
 
-    context "when request has a share token" do
+    context "when the share token cookie is set" do
       let!(:share) { FactoryGirl.create(:share) }
 
       before :each do
-        request.env["omniauth.params"] = { "share_token" => share.token }
+        cookies[:share_token] = share.token
       end
 
       it "creates a new user with the shared recipe" do
