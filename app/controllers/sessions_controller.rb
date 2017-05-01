@@ -7,7 +7,7 @@ class SessionsController < ApplicationController
   def login_attempt
     user = User.where(email: params[:email]).first
 
-    if user && user.authenticate(params[:password])
+    if user&.authenticates_with_password? && user&.authenticate(params[:password])
       session[:user_id] = user.id
       redirect_to shares_path
     else
