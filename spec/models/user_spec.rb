@@ -53,4 +53,16 @@ RSpec.describe User, type: :model do
       expect(subject.full_name).to eq("#{subject.first_name} #{subject.last_name}")
     end
   end
+
+  describe "#authenticates_with_password?" do
+    it "is false if the password digest is 'NA'" do
+      user.password_digest = "NA"
+      expect(user.authenticates_with_password?).to eq(false)
+    end
+
+    it "is false if the user has a bcrypt password digest" do
+      user.update(password: "password", password_confirmation: "password")
+      expect(user.authenticates_with_password?).to eq(true)
+    end
+  end
 end

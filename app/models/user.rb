@@ -1,4 +1,6 @@
 class User < ApplicationRecord
+  NO_PASSWORD_DIGEST = "NA"
+
   has_secure_password
 
   validates :password, length: { minimum: 6 }, allow_nil: true
@@ -18,11 +20,15 @@ class User < ApplicationRecord
     where(email: auth.info.email).first_or_create(
       first_name: auth.info.first_name,
       last_name: auth.info.last_name,
-      password_digest: "NA",
+      password_digest: NO_PASSWORD_DIGEST,
     )
   end
 
   def full_name
     [first_name, last_name].join(" ")
+  end
+
+  def authenticates_with_password?
+    password_digest != NO_PASSWORD_DIGEST
   end
 end

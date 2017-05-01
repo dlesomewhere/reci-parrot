@@ -7,6 +7,7 @@ RSpec.describe SessionsController, type: :controller do
   end
 
   describe "POST #login_attempt" do
+    let!(:existing_oauth_user) { FactoryGirl.create(:user, password_digest: "NA", email: "hank@globex.com") }
     let!(:existing_user) { FactoryGirl.create(:user, password: "password", password_confirmation: "password") }
 
     context "when the provided email and password match a user" do
@@ -23,9 +24,23 @@ RSpec.describe SessionsController, type: :controller do
       end
     end
 
-    context "when the provided email and password don't match a user" do
+    context "when the password doesn't match the users password" do
       it "redirects to the login_path" do
         post :login_attempt, params: { email: existing_user.email, password: "123456" }
+        expect(response).to redirect_to(login_path)
+      end
+    end
+
+    context "when the provided email matches an oauth user" do
+      it "redirects to the login_path" do
+        post :login_attempt, params: { email: existing_oauth_user.email, password: "123456" }
+        expect(response).to redirect_to(login_path)
+      end
+    end
+
+    context "when the provided email doesn't match any user" do
+      it "redirects to the login_path" do
+        post :login_attempt, params: { email: "an@other.test", password: "123456" }
         expect(response).to redirect_to(login_path)
       end
     end
