@@ -4,9 +4,11 @@
       Signing up lets you share recipes
     </h2>
 
-    <div class="mb-4 mt-3 offset-sm-2 col-sm-10">
-      <%= image_submit_tag "google_signin_buttons/web/1x/btn_google_signin_dark_normal_web.png" %>
-    </div>
+    <%= form_tag signin_path do %>
+      <div class="mb-4 mt-3 offset-sm-2 col-sm-10">
+        <%= image_submit_tag "google_signin_buttons/web/1x/btn_google_signin_dark_normal_web.png" %>
+      </div>
+    <% end %>
 
     <h6 class="mt-2">
       Or if you prefer, sign up by hand by hand:
